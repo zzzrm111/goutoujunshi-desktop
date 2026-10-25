@@ -1,0 +1,93 @@
+/* 主界面左右分栏：左侧 3D 角色，右侧对话 */
+.main-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+.character-pane {
+  position: relative;
+  flex: 0 0 42%;
+  max-width: 620px;
+  min-width: 300px;
+  border-right: 1px solid #e8ece9;
+  overflow: hidden;
+}
+
+.character-pane-caption {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(150, 170, 158, 0.24);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.character-pane-caption strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3d4a43;
+}
+
+.character-pane-caption span {
+  font-size: 11px;
+  color: #7c8a82;
+}
+
+.chat-pane {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chat-pane .conversation,
+.chat-pane .welcome {
+  flex: 1;
+}
+
+.chat-pane .composer-wrap {
+  flex: 0 0 auto;
+}
+
+/* 窄屏：角色区压缩到顶部，对话在下 */
+@media (max-width: 900px) {
+  .main-body {
+    flex-direction: column;
+  }
+
+  .character-pane {
+    flex: 0 0 32%;
+    min-height: 180px;
+    max-width: none;
+    border-right: 0;
+    border-bottom: 1px solid #e8ece9;
+  }
+
+  .character-pane-caption {
+    bottom: 10px;
+    padding: 5px 11px;
+  }
+}
+
+/* 手机：进一步压缩角色区，保证对话与输入框有足够空间 */
+@media (max-width: 700px) {
+  .character-pane {
+    flex: 0 0 26%;
+    min-height: 140px;
+  }
+
+  .character-pane-caption {
+    display: none;
+  }
+}

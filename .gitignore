@@ -1,0 +1,62 @@
+.DS_Store
+.idea/
+.vscode/
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+dist/
+target/
+target-*/
+apps/api/.env
+apps/api/data/
+.pytest_cache/
+apps/web/test-results/
+# 角色验证脚本产生的截图帧
+apps/web/walk-frames/
+apps/web/arm-frames/
+apps/web/arm-frames-live/
+apps/web/pet-frames/
+apps/web/pet-frames-final/
+apps/web/color-lab/
+apps/web/debug.log
+apps/desktop/main-window.png
+*.log
+backups/
+*.tsbuildinfo
+
+# The raw research workspace is intentionally not part of the distributable skill.
+/恋爱知识库/
+
+# ===== 公开版：模型与本地配置 =====
+# 第三方 VRM 往往禁止再分发；只放行可自由分发的示例模型。
+apps/web/public/models/*.vrm
+!apps/web/public/models/character.sample.vrm
+apps/web/public/models/*.vrma
+
+# Tauri 构建时自动生成
+apps/desktop/src-tauri/gen/
+
+apps/web/.env.local
+apps/web/.env.*.local
+
+# ===== 运行时数据 =====
+companion-data/
+launcher-logs/
+.run/
+downloads/
+backups/
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+
+# ===== 测试与截图产物 =====
+*.wav
+*.mp3
+chat-window-*.png
+desktop-*.png
+pet-*.png
+diag-screen.png
+main-*.png
+tray-*.png

@@ -1,0 +1,9 @@
+fastapi>=0.115,<1
+uvicorn[standard]>=0.30,<1
+sqlalchemy>=2.0,<3
+alembic>=1.13,<2
+pydantic-settings>=2.5,<3
+httpx>=0.27,<1
+websockets>=14,<18
+python-multipart>=0.0.9,<1
+pytest>=8,<10

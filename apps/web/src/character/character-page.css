@@ -1,0 +1,421 @@
+/* 透明模式：根元素默认带页面底色（#f7f8f7），会盖住桌面窗口的透明，
+   因此这里显式清空 html 与 body 的背景。 */
+html.character-transparent,
+html.character-transparent body {
+  background: transparent !important;
+  /* 全局样式给 body 设了 min-width: 320px。桌面角色窗口会缩到 243 逻辑像素
+     （走到"远处"时），不解除这个限制内容会被撑到 320 宽再被裁掉，
+     表现为角色偏离窗口中心且被放大。 */
+  min-width: 0 !important;
+}
+
+html.chat-transparent,
+html.chat-transparent body {
+  width: 100%;
+  height: 100%;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  background: transparent !important;
+}
+
+html.chat-transparent #root {
+  width: 100%;
+  height: 100%;
+}
+
+.chat-window-page {
+  width: 100vw;
+  height: 100vh;
+  padding: 8px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.chat-window-page .pet-chat-panel {
+  position: relative;
+  left: auto;
+  top: auto;
+  bottom: auto;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: 10px;
+  box-shadow: 0 18px 44px rgba(11, 16, 21, 0.34);
+}
+
+.pet-chat-panel.standalone {
+  cursor: default;
+}
+
+.character-page {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  min-width: 0;
+  /* 独立角色页当成一块更大的影棚背景：暖光在右上、冷光在左上、底部压暗收边。 */
+  background:
+    radial-gradient(66% 48% at 88% 2%, rgba(220, 162, 112, 0.44) 0%, rgba(220, 162, 112, 0) 62%),
+    radial-gradient(56% 42% at 4% 4%, rgba(92, 136, 186, 0.38) 0%, rgba(92, 136, 186, 0) 68%),
+    radial-gradient(126% 72% at 50% 110%, rgba(26, 40, 62, 0.48) 0%, rgba(26, 40, 62, 0) 58%),
+    linear-gradient(166deg, #ebe8e4 0%, #ccd4dd 46%, #97a6b8 100%);
+}
+
+.character-page.transparent {
+  background: transparent;
+}
+
+.character-page-stage {
+  position: absolute;
+  inset: 0;
+  transform-origin: center center;
+  transition: transform 0.2s ease;
+}
+
+.character-debug {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #4a544e;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(120, 140, 128, 0.24);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+
+.character-offline {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #7a5a5a;
+  background: rgba(255, 245, 245, 0.9);
+  border: 1px solid rgba(180, 130, 130, 0.28);
+}
+
+/* 桌面宠物模式：整页透明且不可选中，交给 Tauri 接管窗口拖动 */
+.character-page.pet {
+  background: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.character-page.pet .character-debug {
+  display: none;
+}
+
+.pet-action-menu {
+  position: absolute;
+  left: 10px;
+  top: 32%;
+  z-index: 20;
+  width: 150px;
+  padding: 6px;
+  border-radius: 8px;
+  color: #f4efe8;
+  background: rgba(25, 32, 39, 0.95);
+  border: 1px solid rgba(224, 174, 128, 0.4);
+  box-shadow: 0 14px 32px rgba(14, 20, 26, 0.34);
+  backdrop-filter: blur(12px);
+  pointer-events: auto;
+}
+
+.pet-action-menu-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  padding: 2px 9px 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #f6e4d1;
+}
+
+.pet-action-menu-status {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: #72c6a4;
+  box-shadow: 0 0 0 3px rgba(114, 198, 164, 0.13);
+}
+
+.pet-action-menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 38px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  color: #e9e5df;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pet-action-menu button:hover,
+.pet-action-menu button:focus-visible {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+}
+
+.pet-action-menu button:active {
+  background: rgba(224, 174, 128, 0.16);
+}
+
+.pet-action-menu button svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  stroke-width: 1.8;
+  color: #e0ae80;
+}
+
+.pet-chat-panel {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 21;
+  display: flex;
+  flex-direction: column;
+  width: min(310px, calc(100% - 20px));
+  height: min(348px, calc(100% - 20px));
+  min-height: 220px;
+  overflow: hidden;
+  border: 1px solid rgba(224, 174, 128, 0.34);
+  border-radius: 8px;
+  color: #f2eee8;
+  background: rgba(21, 28, 34, 0.84);
+  box-shadow: 0 16px 38px rgba(11, 16, 21, 0.38);
+  backdrop-filter: blur(14px);
+  pointer-events: auto;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.pet-chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 0 0 44px;
+  padding: 0 8px 0 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: move;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pet-chat-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #f6e4d1;
+}
+
+.pet-chat-title span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pet-chat-title svg,
+.pet-chat-close svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  stroke-width: 1.8;
+  color: #e0ae80;
+}
+
+.pet-chat-close {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.pet-chat-close:hover,
+.pet-chat-close:focus-visible {
+  background: rgba(255, 255, 255, 0.09);
+  outline: none;
+}
+
+.pet-chat-messages {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 9px;
+  min-height: 0;
+  padding: 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: rgba(224, 174, 128, 0.36) transparent;
+  scrollbar-width: thin;
+}
+
+.pet-chat-message {
+  display: flex;
+  width: 100%;
+}
+
+.pet-chat-message > div {
+  max-width: 88%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.pet-chat-message.assistant {
+  justify-content: flex-start;
+}
+
+.pet-chat-message.assistant > div {
+  color: #eeeae4;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.pet-chat-message.user {
+  justify-content: flex-end;
+}
+
+.pet-chat-message.user > div {
+  color: #fff7ee;
+  background: rgba(197, 127, 82, 0.42);
+}
+
+.pet-chat-message.error > div {
+  color: #ffd9d6;
+  background: rgba(153, 62, 58, 0.34);
+}
+
+.pet-chat-loading,
+.pet-chat-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 100%;
+  color: rgba(242, 238, 232, 0.62);
+  font-size: 12px;
+}
+
+.pet-chat-loading svg,
+.pet-chat-spinner {
+  width: 16px;
+  height: 16px;
+  animation: pet-chat-spin 0.9s linear infinite;
+}
+
+.pet-chat-error {
+  flex: 0 0 auto;
+  margin: 0 10px 8px;
+  padding: 7px 9px;
+  border-radius: 6px;
+  color: #ffd9d6;
+  background: rgba(153, 62, 58, 0.24);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.pet-chat-compose {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36px;
+  gap: 7px;
+  flex: 0 0 auto;
+  align-items: end;
+  padding: 9px 10px 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pet-chat-compose textarea {
+  width: 100%;
+  min-height: 48px;
+  max-height: 90px;
+  resize: none;
+  padding: 8px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  outline: none;
+  color: #f4f0ea;
+  background: rgba(255, 255, 255, 0.07);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.45;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.pet-chat-compose textarea::placeholder {
+  color: rgba(244, 240, 234, 0.38);
+}
+
+.pet-chat-compose textarea:focus {
+  border-color: rgba(224, 174, 128, 0.56);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.pet-chat-compose textarea:disabled {
+  opacity: 0.58;
+}
+
+.pet-chat-compose button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  color: #241b15;
+  background: #e0ae80;
+  cursor: pointer;
+}
+
+.pet-chat-compose button:hover,
+.pet-chat-compose button:focus-visible {
+  background: #efc39a;
+  outline: none;
+}
+
+.pet-chat-compose button:disabled {
+  color: rgba(242, 238, 232, 0.38);
+  background: rgba(255, 255, 255, 0.08);
+  cursor: default;
+}
+
+.pet-chat-compose button svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 1.9;
+}
+
+@keyframes pet-chat-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,105 @@
+.character-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  overflow: hidden;
+  /* 影棚式背景：右上暖光、左上冷光、底部压深，让角色从背景里"立"出来。 */
+  background:
+    radial-gradient(70% 50% at 86% 2%, rgba(214, 156, 108, 0.42) 0%, rgba(214, 156, 108, 0) 62%),
+    radial-gradient(58% 44% at 4% 4%, rgba(96, 138, 186, 0.36) 0%, rgba(96, 138, 186, 0) 68%),
+    radial-gradient(120% 70% at 50% 112%, rgba(30, 44, 66, 0.44) 0%, rgba(30, 44, 66, 0) 58%),
+    linear-gradient(168deg, #e9e6e2 0%, #cfd6de 46%, #9dabbb 100%);
+}
+
+.character-stage.transparent {
+  background: transparent;
+}
+
+.character-stage-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.character-stage-canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.character-stage-hint {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #5c6660;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(120, 140, 128, 0.24);
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+}
+
+.character-stage-hint.error {
+  color: #8a4f4f;
+  border-color: rgba(180, 120, 120, 0.32);
+}
+
+.character-stage.pet {
+  min-height: 0;
+  background: transparent;
+}
+
+/* 桌面宠物模式下拖动窗口由 Tauri 接管：
+   画布不接收指针事件，让按下落到带 drag-region 的容器上，整窗都能拖。 */
+.character-stage.pet .character-stage-canvas {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  /* 浅蓝手绘材质叠在任意桌面背景上会显得偏淡；只增强桌宠画布，
+     网页版保持原始色彩。 */
+  filter: saturate(1.16) contrast(1.08);
+}
+
+.character-stage.pet {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* 头顶气泡：位置由角色头部骨骼投影决定，这里只负责外观 */
+.character-bubble {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  max-width: min(280px, 80%);
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #333f39;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(94, 114, 132, 0.22);
+  box-shadow: 0 10px 24px rgba(38, 52, 66, 0.16);
+  backdrop-filter: blur(8px);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.character-bubble::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 10px;
+  height: 10px;
+  transform: translateX(-50%) rotate(45deg);
+  background: rgba(255, 255, 255, 0.95);
+  border-right: 1px solid rgba(94, 114, 132, 0.22);
+  border-bottom: 1px solid rgba(94, 114, 132, 0.22);
+}

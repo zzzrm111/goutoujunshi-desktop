@@ -1,0 +1,6 @@
+id: girlfriend-conflict
+version: 0.1.0
+mode: girlfriend
+required: false
+input_schema: SkillContext
+output_schema: SkillResult

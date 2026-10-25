@@ -1,0 +1,31 @@
+[package]
+name = "companion-desktop"
+version = "0.1.0"
+description = "AI 女友桌面包"
+authors = ["local"]
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+tauri-plugin-shell = "2"
+tauri-plugin-window-state = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# 走动线程需要读取鼠标左键状态来实现"按住角色拖动窗口"，
+# 用系统级查询而不是依赖 WebView 的指针事件，拖动更可靠。
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = [
+    "Win32_Foundation",
+    "Win32_UI_Input_KeyboardAndMouse",
+] }
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

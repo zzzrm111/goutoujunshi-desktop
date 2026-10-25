@@ -1,0 +1,6 @@
+id: advisor-dogtoujunshi
+version: 0.1.0
+mode: advisor
+required: true
+input_schema: SkillContext
+output_schema: SkillResult

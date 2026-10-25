@@ -1,0 +1,6 @@
+id: relationship-judgement
+version: 0.1.0
+mode: girlfriend
+required: true
+input_schema: SkillContext
+output_schema: RelationshipJudgement
